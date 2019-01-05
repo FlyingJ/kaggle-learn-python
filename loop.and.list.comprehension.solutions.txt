@@ -1,0 +1,90 @@
+def has_lucky_number(nums):
+    """Return whether the given list of numbers is lucky. A lucky list contains
+    at least one number divisible by 7.
+    """
+    for num in nums:
+        if num != 0 and num % 7 == 0:
+            return True
+    return False
+
+q1.check()
+
+
+
+def elementwise_greater_than(L, thresh):
+    """Return a list with the same length as L, where the value at index i is 
+    True if L[i] is greater than thresh, and False otherwise.
+    
+    >>> elementwise_greater_than([1, 2, 3, 4], 2)
+    [False, False, True, True]
+    """
+    return [num > thresh for num in L]
+
+q2.check()
+
+
+
+def menu_is_boring(meals):
+    """Given a list of meals served over some period of time, return True if the
+    same meal has ever been served two days in a row, and False otherwise.
+    """
+    previous_meal = ""
+    for meal in meals:
+        if meal == previous_meal:
+            return True
+        previous_meal = meal
+    return False
+
+q3.check()
+
+
+
+def estimate_average_slot_payout(n_runs):
+    """Run the slot machine n_runs times and return the average net profit per run.
+    Example calls (note that return value is nondeterministic!):
+    >>> estimate_average_slot_payout(1)
+    -1
+    >>> estimate_average_slot_payout(1)
+    0.5
+    """
+    play_basis = 1
+    total_net_profit = 0
+    for i in range(n_runs):
+        total_net_profit += play_slot_machine() - play_basis
+    return total_net_profit / n_runs
+
+trials = 1000
+simulations_per_trial = 10000
+trial_sum = 0
+for i in range(trials):
+    trial_sum += estimate_average_slot_payout(simulations_per_trial)
+print(trial_sum / trials)
+
+
+
+def slots_survival_simulation(start_balance, n_spins):
+    balance = start_balance
+    spins_left = n_spins
+    while balance >= 1 and spins_left:
+        balance -= 1
+        balance += play_slot_machine()
+        spins_left -= 1
+        if spins_left == 0:
+            return True
+    return False
+
+def slots_survival_probability(start_balance, n_spins, n_simulations):
+    """Return the approximate probability (as a number between 0 and 1) that we can complete the 
+    given number of spins of the slot machine before running out of money, assuming we start 
+    with the given balance. Estimate the probability by running the scenario the specified number of times.
+    
+    >>> slots_survival_probability(10.00, 10, 1000)
+    1.0
+    >>> slots_survival_probability(1.00, 2, 1000)
+    .25
+    """
+    return sum([slots_survival_simulation(start_balance, n_spins) for i in range(n_simulations)]) / n_simulations
+
+q5.check()
+
+
